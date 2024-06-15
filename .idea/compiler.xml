@@ -6,10 +6,10 @@
         <outputRelativeToContentRoot value="true" />
         <option name="project" value="org.contikios.cooja/cooja" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_core/2.27.1/5512925b567076a7ff80a122cee1f73e3d257fd6/error_prone_core-2.27.1.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_check_api/2.27.1/87d8da84918a4b48f610099516089d0024664d29/error_prone_check_api-2.27.1.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotation/2.27.1/55e2b3fbd93d519ea2b8005b4bffc38228727a95/error_prone_annotation-2.27.1.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_type_annotations/2.27.1/6aff66b162f7d50d59eb529aa0e303fe321b0fe5/error_prone_type_annotations-2.27.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_core/2.28.0/6cdc9d1c0fdba408e91a5d15a2651b7b04b91717/error_prone_core-2.28.0.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_check_api/2.28.0/fe47735cf7914d99af90b5c788bdafca813dce27/error_prone_check_api-2.28.0.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotation/2.28.0/57d12935616c3617b629257337192190faff42d9/error_prone_annotation-2.28.0.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_type_annotations/2.28.0/28df65ac20fcdb061b214d6674da8f5cc561e594/error_prone_type_annotations-2.28.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcollections/pcollections/4.0.1/59f3bf5fb28c5f5386804dcf129267416b75d7c/pcollections-4.0.1.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.auto/auto-common/1.2.2/9d38f10e22411681cf1d1ee3727e002af19f2c9e/auto-common-1.2.2.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.inject/guice/5.1.0/da25056c694c54ba16e78e4fc35f17fc60f0d1b4/guice-5.1.0.jar" />
@@ -18,7 +18,7 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.eisop/dataflow-errorprone/3.41.0-eisop1/3fc86eff95c549e42c41fd7c01c2a57ed46a5a94/dataflow-errorprone-3.41.0-eisop1.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.auto.value/auto-value-annotations/1.9/25a0fcef915f663679fcdb447541c5d86a9be4ba/auto-value-annotations-1.9.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.ben-manes.caffeine/caffeine/3.0.5/3de85488bf535299d5f36d98626605331a10de87/caffeine-3.0.5.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.27.1/a87dac4f79a6e5b1e55c629f16c754c53cbd50ec/error_prone_annotations-2.27.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.28.0/59fc00087ce372de42e394d2c789295dff2d19f0/error_prone_annotations-2.28.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.19.6/578a2070b8106d3ea350fc737e777262bdc796b1/protobuf-java-3.19.6.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.auto.service/auto-service-annotations/1.0.1/ac86dacc0eb9285ea9d42eee6aad8629ca3a7432/auto-service-annotations-1.0.1.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
@@ -36,11 +36,11 @@
         <option name="project" value="org.contikios.cooja/cooja" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/info.picocli/picocli-codegen/4.7.6/c36d09aee9ded3685ceac45de8c1e02623158920/picocli-codegen-4.7.6.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_core/2.27.1/5512925b567076a7ff80a122cee1f73e3d257fd6/error_prone_core-2.27.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_core/2.28.0/6cdc9d1c0fdba408e91a5d15a2651b7b04b91717/error_prone_core-2.28.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/info.picocli/picocli/4.7.6/77c2cb87814b6a03d431fc856024a9f8ff605ad4/picocli-4.7.6.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_check_api/2.27.1/87d8da84918a4b48f610099516089d0024664d29/error_prone_check_api-2.27.1.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotation/2.27.1/55e2b3fbd93d519ea2b8005b4bffc38228727a95/error_prone_annotation-2.27.1.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_type_annotations/2.27.1/6aff66b162f7d50d59eb529aa0e303fe321b0fe5/error_prone_type_annotations-2.27.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_check_api/2.28.0/fe47735cf7914d99af90b5c788bdafca813dce27/error_prone_check_api-2.28.0.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotation/2.28.0/57d12935616c3617b629257337192190faff42d9/error_prone_annotation-2.28.0.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_type_annotations/2.28.0/28df65ac20fcdb061b214d6674da8f5cc561e594/error_prone_type_annotations-2.28.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcollections/pcollections/4.0.1/59f3bf5fb28c5f5386804dcf129267416b75d7c/pcollections-4.0.1.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.auto/auto-common/1.2.2/9d38f10e22411681cf1d1ee3727e002af19f2c9e/auto-common-1.2.2.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.inject/guice/5.1.0/da25056c694c54ba16e78e4fc35f17fc60f0d1b4/guice-5.1.0.jar" />
@@ -49,7 +49,7 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.eisop/dataflow-errorprone/3.41.0-eisop1/3fc86eff95c549e42c41fd7c01c2a57ed46a5a94/dataflow-errorprone-3.41.0-eisop1.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.auto.value/auto-value-annotations/1.9/25a0fcef915f663679fcdb447541c5d86a9be4ba/auto-value-annotations-1.9.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.ben-manes.caffeine/caffeine/3.0.5/3de85488bf535299d5f36d98626605331a10de87/caffeine-3.0.5.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.27.1/a87dac4f79a6e5b1e55c629f16c754c53cbd50ec/error_prone_annotations-2.27.1.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.28.0/59fc00087ce372de42e394d2c789295dff2d19f0/error_prone_annotations-2.28.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.19.6/578a2070b8106d3ea350fc737e777262bdc796b1/protobuf-java-3.19.6.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.auto.service/auto-service-annotations/1.0.1/ac86dacc0eb9285ea9d42eee6aad8629ca3a7432/auto-service-annotations-1.0.1.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
