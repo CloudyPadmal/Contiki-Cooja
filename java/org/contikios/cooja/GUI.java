@@ -398,8 +398,15 @@ public class GUI {
                 Cooja.configuration.logDir(), new HashMap<>());
         Simulation sim;
         try {
-          sim = new Simulation(config, cooja, cfg.title(), cfg.generatedSeed(),
-                  cfg.randomSeed(), cfg.radioMedium(), cfg.moteStartDelay(), false, null);
+          if (cfg.radioEnvironment() == 1) {
+            sim = new Simulation(config, cooja, cfg.title(), cfg.generatedSeed(),
+                    cfg.randomSeed(), cfg.radioEnvironment(), cfg.radioMedium(),
+                    cfg.moteStartDelay(), false, null);
+          } else {
+            sim = new Simulation(config, cooja, cfg.title(), cfg.generatedSeed(),
+                    cfg.randomSeed(), cfg.radioMedium(),
+                    cfg.moteStartDelay(), false, null);
+          }
         } catch (MoteType.MoteTypeCreationException | Cooja.SimulationCreationException ex) {
           return;
         }
