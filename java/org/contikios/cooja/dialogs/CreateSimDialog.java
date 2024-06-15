@@ -285,6 +285,7 @@ public class CreateSimDialog extends JDialog {
     createButton.addActionListener(e -> {
       config = new SimConfig(title.getText(),
               gui.getRegisteredRadioMediums().get(radioMediumBox.getSelectedIndex()).getName(),
+              radioEnvironmentBox.getSelectedIndex(),
               randomSeedGenerated.isSelected(),
               randomSeedGenerated.isSelected()
                       ? new Random().nextLong() : ((Number) randomSeed.getValue()).longValue(),
@@ -309,5 +310,7 @@ public class CreateSimDialog extends JDialog {
   }
 
   /** Basic simulation configuration. */
-  public record SimConfig(String title, String radioMedium, boolean generatedSeed, long randomSeed, long moteStartDelay) {}
+//  public record SimConfig(String title, String radioMedium, boolean generatedSeed, long randomSeed, long moteStartDelay) {}
+  public record SimConfig(String title, String radioMedium, int radioEnvironment, boolean generatedSeed, long randomSeed, long moteStartDelay) {}
+
 }

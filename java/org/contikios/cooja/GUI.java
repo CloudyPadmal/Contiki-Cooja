@@ -392,7 +392,7 @@ public class GUI {
         }
 
         var cfg = CreateSimDialog.showDialog(cooja, new CreateSimDialog.SimConfig(null, null,
-                false, 123456, 1000 * Simulation.MILLISECOND));
+                0, false, 123456, 1000 * Simulation.MILLISECOND));
         if (cfg == null) return;
         var config = new Simulation.SimConfig(null, cfg.randomSeed(), false, false,
                 Cooja.configuration.logDir(), new HashMap<>());
@@ -1471,12 +1471,13 @@ public class GUI {
             long seed = manualRandomSeed != null ? manualRandomSeed
                     : generatedSeed ? new Random().nextLong() : Long.parseLong(cfgSeed);
             var medium = simCfg.getChild("radiomedium").getText().trim();
+            var environment = Integer.parseInt(simCfg.getChild("radioenvironment").getText());
             var cfgDelay = simCfg.getChild("motedelay");
             long delay = cfgDelay == null
                     ? Integer.parseInt(simCfg.getChild("motedelay_us").getText())
                     : Integer.parseInt(cfgDelay.getText()) * Simulation.MILLISECOND;
             var config = CreateSimDialog.showDialog(cooja, new CreateSimDialog.SimConfig(title, medium,
-                    generatedSeed, seed, delay));
+                    environment, generatedSeed, seed, delay));
             rv = Objects.requireNonNullElse(config, false);
             // Try to recreate simulation using a different mote type.
             var availableMoteTypesObjs = cooja.getRegisteredMoteTypes();
