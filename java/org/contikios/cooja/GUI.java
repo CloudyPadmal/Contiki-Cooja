@@ -716,6 +716,27 @@ public class GUI {
         mainPane.add(smallPane);
         mainPane.add(Box.createRigidArea(new Dimension(0, 5)));
 
+        // Radio environment
+        smallPane = new JPanel();
+        smallPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+        smallPane.setLayout(new BoxLayout(smallPane, BoxLayout.X_AXIS));
+        label = new JLabel("Radio environment");
+        label.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
+        smallPane.add(label);
+        smallPane.add(Box.createHorizontalStrut(10));
+        smallPane.add(Box.createHorizontalGlue());
+
+        int radioEnvironment = sim.getRadioEnvironment();
+        if (radioEnvironment == 0) {
+          smallPane.add(new JLabel("Generic radio environment"));
+        } else {
+          smallPane.add(new JLabel("Fat tissue-based radio environment"));
+        }
+        mainPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.Y_AXIS));
+        mainPane.add(smallPane);
+        mainPane.add(Box.createRigidArea(new Dimension(0, 5)));
+
         // Seed.
         smallPane = new JPanel();
         smallPane.setAlignmentX(Component.LEFT_ALIGNMENT);

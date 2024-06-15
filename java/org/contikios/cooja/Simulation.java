@@ -1251,6 +1251,10 @@ public final class Simulation {
     return currentRadioMedium;
   }
 
+  public int getRadioEnvironment() {
+    return currentRadioEnvironment;
+  }
+
   /**
    * Return true is simulation is running.
    *
