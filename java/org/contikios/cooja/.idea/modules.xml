@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cooja.iml" filepath="$PROJECT_DIR$/cooja.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mrm/mrm.iml" filepath="$PROJECT_DIR$/../mrm/mrm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../se/sics/mspsim/mspsim.iml" filepath="$PROJECT_DIR$/../../../se/sics/mspsim/mspsim.iml" />
+    </modules>
+  </component>
+</project>
