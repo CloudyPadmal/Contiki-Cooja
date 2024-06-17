@@ -841,6 +841,7 @@ public class Visualizer extends VisPlugin implements HasQuickHelp {
     // Activate default skins.
     generateAndActivateSkin(IDVisualizerSkin.class);
     generateAndActivateSkin(GridVisualizerSkin.class);
+    // TODO: May be add a skin?
     generateAndActivateSkin(DGRMVisualizerSkin.class);
     generateAndActivateSkin(TrafficVisualizerSkin.class);
     generateAndActivateSkin(UDGMVisualizerSkin.class);

@@ -392,21 +392,15 @@ public class GUI {
         }
 
         var cfg = CreateSimDialog.showDialog(cooja, new CreateSimDialog.SimConfig(null, null,
-                0, false, 123456, 1000 * Simulation.MILLISECOND));
+                false, 123456, 1000 * Simulation.MILLISECOND));
         if (cfg == null) return;
         var config = new Simulation.SimConfig(null, cfg.randomSeed(), false, false,
                 Cooja.configuration.logDir(), new HashMap<>());
         Simulation sim;
         try {
-          if (cfg.radioEnvironment() == 1) {
-            sim = new Simulation(config, cooja, cfg.title(), cfg.generatedSeed(),
-                    cfg.randomSeed(), cfg.radioEnvironment(), cfg.radioMedium(),
-                    cfg.moteStartDelay(), false, null);
-          } else {
-            sim = new Simulation(config, cooja, cfg.title(), cfg.generatedSeed(),
+          sim = new Simulation(config, cooja, cfg.title(), cfg.generatedSeed(),
                     cfg.randomSeed(), cfg.radioMedium(),
                     cfg.moteStartDelay(), false, null);
-          }
         } catch (MoteType.MoteTypeCreationException | Cooja.SimulationCreationException ex) {
           return;
         }
@@ -711,27 +705,6 @@ public class GUI {
         final var sim = cooja.getSimulation();
         smallPane.add(new JLabel(Cooja.getDescriptionOf(sim.getRadioMedium().getClass())));
         var mainPane = new JPanel();
-        mainPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.Y_AXIS));
-        mainPane.add(smallPane);
-        mainPane.add(Box.createRigidArea(new Dimension(0, 5)));
-
-        // Radio environment
-        smallPane = new JPanel();
-        smallPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-        smallPane.setLayout(new BoxLayout(smallPane, BoxLayout.X_AXIS));
-        label = new JLabel("Radio environment");
-        label.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
-        smallPane.add(label);
-        smallPane.add(Box.createHorizontalStrut(10));
-        smallPane.add(Box.createHorizontalGlue());
-
-        int radioEnvironment = sim.getRadioEnvironment();
-        if (radioEnvironment == 0) {
-          smallPane.add(new JLabel("Generic radio environment"));
-        } else {
-          smallPane.add(new JLabel("Fat tissue-based radio environment"));
-        }
         mainPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPane.setLayout(new BoxLayout(mainPane, BoxLayout.Y_AXIS));
         mainPane.add(smallPane);
@@ -1499,13 +1472,12 @@ public class GUI {
             long seed = manualRandomSeed != null ? manualRandomSeed
                     : generatedSeed ? new Random().nextLong() : Long.parseLong(cfgSeed);
             var medium = simCfg.getChild("radiomedium").getText().trim();
-            var environment = Integer.parseInt(simCfg.getChild("radioenvironment").getText());
             var cfgDelay = simCfg.getChild("motedelay");
             long delay = cfgDelay == null
                     ? Integer.parseInt(simCfg.getChild("motedelay_us").getText())
                     : Integer.parseInt(cfgDelay.getText()) * Simulation.MILLISECOND;
             var config = CreateSimDialog.showDialog(cooja, new CreateSimDialog.SimConfig(title, medium,
-                    environment, generatedSeed, seed, delay));
+                    generatedSeed, seed, delay));
             rv = Objects.requireNonNullElse(config, false);
             // Try to recreate simulation using a different mote type.
             var availableMoteTypesObjs = cooja.getRegisteredMoteTypes();

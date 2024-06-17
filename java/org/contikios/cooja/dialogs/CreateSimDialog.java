@@ -152,29 +152,6 @@ public class CreateSimDialog extends JDialog {
     advancedBox.add(horizBox);
     advancedBox.add(Box.createRigidArea(new Dimension(0,5)));
 
-    // Radio environment selection
-    horizBox = Box.createHorizontalBox();
-    horizBox.setMaximumSize(new Dimension(Integer.MAX_VALUE,LABEL_HEIGHT));
-    horizBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-    label = new JLabel("Radio environment");
-    label.setPreferredSize(new Dimension(LABEL_WIDTH,LABEL_HEIGHT));
-
-    Vector<String> radioEnvironmentDescriptions = new Vector<>();
-    radioEnvironmentDescriptions.add("Generic radio environment");
-    radioEnvironmentDescriptions.add("Fat tissue-based in-body environment");
-
-    final var radioEnvironmentBox = new JComboBox<>(radioEnvironmentDescriptions);
-    radioEnvironmentBox.setSelectedIndex(0);
-    label.setLabelFor(radioEnvironmentBox);
-
-    horizBox.add(label);
-    horizBox.add(Box.createHorizontalStrut(10));
-    horizBox.add(radioEnvironmentBox);
-    horizBox.setToolTipText("Defines the wireless propagation environment");
-
-    advancedBox.add(horizBox);
-    advancedBox.add(Box.createRigidArea(new Dimension(0,5)));
-
     // Delayed startup
     horizBox = Box.createHorizontalBox();
     horizBox.setMaximumSize(new Dimension(Integer.MAX_VALUE,LABEL_HEIGHT));
@@ -285,7 +262,6 @@ public class CreateSimDialog extends JDialog {
     createButton.addActionListener(e -> {
       config = new SimConfig(title.getText(),
               gui.getRegisteredRadioMediums().get(radioMediumBox.getSelectedIndex()).getName(),
-              radioEnvironmentBox.getSelectedIndex(),
               randomSeedGenerated.isSelected(),
               randomSeedGenerated.isSelected()
                       ? new Random().nextLong() : ((Number) randomSeed.getValue()).longValue(),
@@ -310,7 +286,6 @@ public class CreateSimDialog extends JDialog {
   }
 
   /** Basic simulation configuration. */
-//  public record SimConfig(String title, String radioMedium, boolean generatedSeed, long randomSeed, long moteStartDelay) {}
-  public record SimConfig(String title, String radioMedium, int radioEnvironment, boolean generatedSeed, long randomSeed, long moteStartDelay) {}
+  public record SimConfig(String title, String radioMedium, boolean generatedSeed, long randomSeed, long moteStartDelay) {}
 
 }

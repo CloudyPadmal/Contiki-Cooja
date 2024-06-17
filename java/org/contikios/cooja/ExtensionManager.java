@@ -62,6 +62,7 @@ import org.contikios.cooja.radiomediums.UDGM;
 import org.contikios.cooja.radiomediums.UDGMConstantLoss;
 import org.contikios.cooja.serialsocket.SerialSocketClient;
 import org.contikios.cooja.serialsocket.SerialSocketServer;
+import org.contikios.inbody.InBody;
 import org.contikios.mrm.MRM;
 
 /**
@@ -98,6 +99,7 @@ public class ExtensionManager {
     registerBuiltinRadioMedium(SilentRadioMedium.class);
     registerBuiltinRadioMedium(LogisticLoss.class);
     registerBuiltinRadioMedium(MRM.class);
+    registerBuiltinRadioMedium(InBody.class);
 
   }
   private static void registerBuiltinPlugin(final Class<? extends Plugin> pluginClass) {
@@ -151,6 +153,7 @@ public class ExtensionManager {
       case "org.contikios.cooja.radiomediums.SilentRadioMedium" -> new SilentRadioMedium(sim);
       case "org.contikios.cooja.radiomediums.LogisticLoss" -> new LogisticLoss(sim);
       case "org.contikios.mrm.MRM" -> new MRM(sim);
+      case "org.contikios.inbody.InBody" -> new InBody(sim);
       default -> {
         var clazz = getRadioMediumClass(cooja, name);
         if (clazz == null) {
