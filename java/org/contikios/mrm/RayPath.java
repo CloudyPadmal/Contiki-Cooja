@@ -38,64 +38,64 @@ import java.util.Vector;
  * @author Fredrik Osterlind
  */
 class RayPath {
-  private final Vector<Point2D> points = new Vector<>();
-  private final Vector<RayData.RayType> types = new Vector<>();
-  
-  public void addPoint(Point2D point, RayData.RayType type) {
-    points.insertElementAt(point, 0);
-    types.insertElementAt(type, 0);
-  }
+    private final Vector<Point2D> points = new Vector<>();
+    private final Vector<RayData.RayType> types = new Vector<>();
 
-  public int getSubPathCount() {
-    return points.size() - 1;
-  }
-
-  public Line2D getSubPath(int pos) {
-    return new Line2D.Double(points.get(pos), points.get(pos + 1));
-  }
-
-  public Point2D getPoint(int i) {
-    return points.get(i);
-  }
-  
-  public RayData.RayType getType(int i) {
-    return types.get(i);
-  }
-  
-  @Override
-  public String toString() {
-    if (points.size() != types.size())
-      return "Malformed ray path (differing sizes)";
-
-    if (points.isEmpty())
-      return "Empty ray path";
-    
-    if (types.firstElement() != RayData.RayType.ORIGIN && types.lastElement() != RayData.RayType.ORIGIN)
-      return "Malformed ray path (not closed)";
-      
-    if (types.firstElement() != RayData.RayType.DESTINATION && types.lastElement() != RayData.RayType.DESTINATION)
-      return "Malformed ray path (not closed)";
-
-    if (types.firstElement() == types.lastElement())
-      return "Malformed ray path (last == first element)";
-
-    var retVal = new StringBuilder();
-    for (var currentType : types) {
-      if (currentType == RayData.RayType.DESTINATION)
-        retVal.append(" DEST ");
-      else if (currentType == RayData.RayType.DIFFRACTION)
-        retVal.append(" DIFF ");
-      else if (currentType == RayData.RayType.ORIGIN)
-        retVal.append(" ORIG ");
-      else if (currentType == RayData.RayType.REFLECTION)
-        retVal.append(" REFL ");
-      else if (currentType == RayData.RayType.REFRACTION)
-        retVal.append(" REFR ");
-      else
-        retVal.append(" ???? ");
+    public void addPoint(Point2D point, RayData.RayType type) {
+        points.insertElementAt(point, 0);
+        types.insertElementAt(type, 0);
     }
-    return retVal.toString();
-    
-  }
-  
+
+    public int getSubPathCount() {
+        return points.size() - 1;
+    }
+
+    public Line2D getSubPath(int pos) {
+        return new Line2D.Double(points.get(pos), points.get(pos + 1));
+    }
+
+    public Point2D getPoint(int i) {
+        return points.get(i);
+    }
+
+    public RayData.RayType getType(int i) {
+        return types.get(i);
+    }
+
+    @Override
+    public String toString() {
+        if (points.size() != types.size())
+            return "Malformed ray path (differing sizes)";
+
+        if (points.isEmpty())
+            return "Empty ray path";
+
+        if (types.firstElement() != RayData.RayType.ORIGIN && types.lastElement() != RayData.RayType.ORIGIN)
+            return "Malformed ray path (not closed)";
+
+        if (types.firstElement() != RayData.RayType.DESTINATION && types.lastElement() != RayData.RayType.DESTINATION)
+            return "Malformed ray path (not closed)";
+
+        if (types.firstElement() == types.lastElement())
+            return "Malformed ray path (last == first element)";
+
+        var retVal = new StringBuilder();
+        for (var currentType : types) {
+            if (currentType == RayData.RayType.DESTINATION)
+                retVal.append(" DEST ");
+            else if (currentType == RayData.RayType.DIFFRACTION)
+                retVal.append(" DIFF ");
+            else if (currentType == RayData.RayType.ORIGIN)
+                retVal.append(" ORIG ");
+            else if (currentType == RayData.RayType.REFLECTION)
+                retVal.append(" REFL ");
+            else if (currentType == RayData.RayType.REFRACTION)
+                retVal.append(" REFR ");
+            else
+                retVal.append(" ???? ");
+        }
+        return retVal.toString();
+
+    }
+
 }
