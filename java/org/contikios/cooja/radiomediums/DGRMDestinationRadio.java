@@ -31,71 +31,72 @@
 package org.contikios.cooja.radiomediums;
 
 import java.util.Collection;
+
 import org.contikios.cooja.Simulation;
 import org.contikios.cooja.interfaces.Radio;
 import org.jdom2.Element;
 
 public class DGRMDestinationRadio extends DestinationRadio {
-	public double ratio = 1.0; /* Link success ratio (per packet). */
-	public double signal = AbstractRadioMedium.SS_STRONG; /* RSSI */
-	public long delay; /* EXPERIMENTAL: Propagation delay (us). */
-	public int lqi = 105;
-	public int channel = -1; /* not set by default */
+    public double ratio = 1.0; /* Link success ratio (per packet). */
+    public double signal = AbstractRadioMedium.SS_STRONG; /* RSSI */
+    public long delay; /* EXPERIMENTAL: Propagation delay (us). */
+    public int lqi = 105;
+    public int channel = -1; /* not set by default */
 
-	public DGRMDestinationRadio(Radio dest) {
-		super(dest);
-	}
+    public DGRMDestinationRadio(Radio dest) {
+        super(dest);
+    }
 
-	public int getChannel() {
-		return channel;
-	}
+    public int getChannel() {
+        return channel;
+    }
 
-	@Override
-	public Collection<Element> getConfigXML() {
-		Collection<Element> config = super.getConfigXML();
-		Element element;
+    @Override
+    public Collection<Element> getConfigXML() {
+        Collection<Element> config = super.getConfigXML();
+        Element element;
 
-		element = new Element("ratio");
-		element.setText(String.valueOf(ratio));
-		config.add(element);
+        element = new Element("ratio");
+        element.setText(String.valueOf(ratio));
+        config.add(element);
 
-		element = new Element("signal");
-		element.setText(String.valueOf(signal));
-		config.add(element);
+        element = new Element("signal");
+        element.setText(String.valueOf(signal));
+        config.add(element);
 
-		element = new Element("lqi");
-		element.setText(String.valueOf(lqi));
-		config.add(element);
-		
-		element = new Element("delay");
-		element.setText(String.valueOf(delay));
-		config.add(element);
-		
-		element = new Element("channel");
-		element.setText(String.valueOf(channel));
-		config.add(element);
+        element = new Element("lqi");
+        element.setText(String.valueOf(lqi));
+        config.add(element);
 
-		return config;
-	}
-	
-	@Override
-	public boolean setConfigXML(final Collection<Element> configXML, Simulation simulation) {
-		if (!super.setConfigXML(configXML, simulation)) {
-			return false;
-		}
-		for (Element element : configXML) {
-			if (element.getName().equals("ratio")) {
-				ratio = Double.parseDouble(element.getText());
-			} else if (element.getName().equals("signal")) {
-				signal = Double.parseDouble(element.getText());
-			} else if (element.getName().equals("lqi")) {
-				lqi = Integer.parseInt(element.getText());
-			} else if (element.getName().equals("delay")) {
-				delay = Long.parseLong(element.getText());
-			} else if (element.getName().equals("channel")) {
-				channel = Integer.parseInt(element.getText());
-			}
-		}
-		return true;
-	}
+        element = new Element("delay");
+        element.setText(String.valueOf(delay));
+        config.add(element);
+
+        element = new Element("channel");
+        element.setText(String.valueOf(channel));
+        config.add(element);
+
+        return config;
+    }
+
+    @Override
+    public boolean setConfigXML(final Collection<Element> configXML, Simulation simulation) {
+        if (!super.setConfigXML(configXML, simulation)) {
+            return false;
+        }
+        for (Element element : configXML) {
+            if (element.getName().equals("ratio")) {
+                ratio = Double.parseDouble(element.getText());
+            } else if (element.getName().equals("signal")) {
+                signal = Double.parseDouble(element.getText());
+            } else if (element.getName().equals("lqi")) {
+                lqi = Integer.parseInt(element.getText());
+            } else if (element.getName().equals("delay")) {
+                delay = Long.parseLong(element.getText());
+            } else if (element.getName().equals("channel")) {
+                channel = Integer.parseInt(element.getText());
+            }
+        }
+        return true;
+    }
 }

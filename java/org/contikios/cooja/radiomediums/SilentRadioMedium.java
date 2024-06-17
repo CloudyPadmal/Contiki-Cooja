@@ -31,6 +31,7 @@
 package org.contikios.cooja.radiomediums;
 
 import java.util.Collection;
+
 import org.contikios.cooja.ClassDescription;
 import org.contikios.cooja.RadioConnection;
 import org.contikios.cooja.Simulation;
@@ -45,27 +46,27 @@ import org.jdom2.Element;
 @ClassDescription("No radio traffic")
 public class SilentRadioMedium extends AbstractRadioMedium {
 
-  public SilentRadioMedium(Simulation simulation) {
-    super(simulation);
-  }
+    public SilentRadioMedium(Simulation simulation) {
+        super(simulation);
+    }
 
-  @Override
-  protected RadioConnection createConnections(Radio radio) {
-    return null;
-  }
-  
-  @Override
-  protected void updateSignalStrengths() {
-  }
-  
+    @Override
+    protected RadioConnection createConnections(Radio radio) {
+        return null;
+    }
 
-  @Override
-  public Collection<Element> getConfigXML() {
-    return null;
-  }
-  
-  @Override
-  public boolean setConfigXML(Collection<Element> configXML, boolean visAvailable) {
-    return true;
-  }
+    @Override
+    protected void updateSignalStrengths() {
+    }
+
+
+    @Override
+    public Collection<Element> getConfigXML() {
+        return null;
+    }
+
+    @Override
+    public boolean setConfigXML(Collection<Element> configXML, boolean visAvailable) {
+        return true;
+    }
 }

@@ -36,25 +36,25 @@ import org.contikios.cooja.interfaces.Radio;
 
 /**
  * UDGM with constant loss probability.
- *  
- * @see UDGM
+ *
  * @author Fredrik Osterlind
+ * @see UDGM
  */
 @ClassDescription("UDGM: Constant Loss")
 public class UDGMConstantLoss extends UDGM {
-  public UDGMConstantLoss(Simulation simulation) {
-    super(simulation);
-  }
-
-  @Override
-  public double getRxSuccessProbability(Radio source, Radio dest) {
-    double distance = source.getPosition().getDistanceTo(dest.getPosition());
-    double moteTransmissionRange = TRANSMITTING_RANGE
-    * ((double) source.getCurrentOutputPowerIndicator() / (double) source.getOutputPowerIndicatorMax());
-    if (distance > moteTransmissionRange) {
-    	return 0.0d;
+    public UDGMConstantLoss(Simulation simulation) {
+        super(simulation);
     }
-  	return SUCCESS_RATIO_RX;
-  }
+
+    @Override
+    public double getRxSuccessProbability(Radio source, Radio dest) {
+        double distance = source.getPosition().getDistanceTo(dest.getPosition());
+        double moteTransmissionRange = TRANSMITTING_RANGE
+                * ((double) source.getCurrentOutputPowerIndicator() / (double) source.getOutputPowerIndicatorMax());
+        if (distance > moteTransmissionRange) {
+            return 0.0d;
+        }
+        return SUCCESS_RATIO_RX;
+    }
 
 }

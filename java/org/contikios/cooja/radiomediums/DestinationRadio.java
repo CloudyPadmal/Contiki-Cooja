@@ -32,30 +32,32 @@ package org.contikios.cooja.radiomediums;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.contikios.cooja.Simulation;
 import org.contikios.cooja.interfaces.Radio;
 import org.jdom2.Element;
 
 public class DestinationRadio {
-	public final Radio radio; /* destination radio */
-	public DestinationRadio(Radio dest) {
-		this.radio = dest;
-	}
+    public final Radio radio; /* destination radio */
 
-	@Override
-	public String toString() {
-		return radio.getMote().toString();
-	}
+    public DestinationRadio(Radio dest) {
+        this.radio = dest;
+    }
 
-	public Collection<Element> getConfigXML() {
-		ArrayList<Element> config = new ArrayList<>();
-		var element = new Element("radio");
-		element.setText(String.valueOf(radio.getMote().getID()));
-		config.add(element);
-		return config;
-	}
+    @Override
+    public String toString() {
+        return radio.getMote().toString();
+    }
 
-	public boolean setConfigXML(Collection<Element> configXML, Simulation simulation) {
-		return true;
-	}
+    public Collection<Element> getConfigXML() {
+        ArrayList<Element> config = new ArrayList<>();
+        var element = new Element("radio");
+        element.setText(String.valueOf(radio.getMote().getID()));
+        config.add(element);
+        return config;
+    }
+
+    public boolean setConfigXML(Collection<Element> configXML, Simulation simulation) {
+        return true;
+    }
 }

@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import org.contikios.cooja.ClassDescription;
 import org.contikios.cooja.RadioConnection;
 import org.contikios.cooja.Simulation;
@@ -48,20 +49,20 @@ import org.slf4j.LoggerFactory;
  * The LogisticLoss radio medium aims to be more realistic as the UDGM radio medium
  * while remaining as easily usable.
  * <p>
- * It takes its name from the fact that the logistic function (shaped as a sigmoid) 
+ * It takes its name from the fact that the logistic function (shaped as a sigmoid)
  * is used to model the packet reception probability based on RSSI.
  * <p>
  * Features:
  * - Models a non-linear relationship between signal level packet reception probability
  * - Models the signal level as a function of distance following a standard formula
- *   from the RF propagation theory
+ * from the RF propagation theory
  * - Adds a random level of noise (AWGN) to the signal level of each packet
  * - Multiple Configurable parameters
  * - Visualization similar to UDGM visualization
  * <p>
  * This Cooja plugin uses the logistic function to model the PRR-RSSI relationship:
  * <p>
- *   PRR(rssi) =  1.0 / (1 + exp(-(rssi - rssi_50%))),
+ * PRR(rssi) =  1.0 / (1 + exp(-(rssi - rssi_50%))),
  * <p>
  * where:
  * - `rssi` is the transmit-power minus the path loss.
@@ -69,12 +70,12 @@ import org.slf4j.LoggerFactory;
  * <p>
  * To model the path loss PL_{dBm}(d) this plugin uses the log-distance path loss model:
  * <p>
- *  PL_{dBm}(d) = PL_0 + PL_t + 10 * \alpha * \log_10 (d / d_0) + NormalDistribution(0, \sigma),
+ * PL_{dBm}(d) = PL_0 + PL_t + 10 * \alpha * \log_10 (d / d_0) + NormalDistribution(0, \sigma),
  * <p>
  * where:
  * - `d_0` is the transmission range in meters;
  * - `PL_0` is the loss at `d_0` (i.e. the Rx sensitivity, by default equal
- *    to `-100` dBm as on the TI CC2650 System-on-Chip for IEEE 802.15.4 packets)
+ * to `-100` dBm as on the TI CC2650 System-on-Chip for IEEE 802.15.4 packets)
  * - `PL_t` is the time-varying component of the path loss (by default, zero)
  * - `\alpha` is the path loss exponent;
  * - `\sigma` is the standard deviation of the Additive White Gaussian Noise.
@@ -87,13 +88,13 @@ import org.slf4j.LoggerFactory;
  * The change is within bounds `[TVPL_{min}, TVPL_{max}]`. The evolution is done in discrete steps.
  * At the time `t`, the `PL_t` is updated as:
  * <p>
- *  PL_t = bound(PL_{t-1} + r),
+ * PL_t = bound(PL_{t-1} + r),
  * <p>
  * where `r` is a small random value, and `bound(pl) = min(MAX_PL, max(MIN_PL, pl))`,
  * and `MIN_PL` and `MAX_PL` are time minimum and maximum values of the time-varying path loss.
  *
- * @see UDGM
  * @author Atis Elsts
+ * @see UDGM
  */
 @ClassDescription("LogisticLoss Medium")
 public class LogisticLoss extends AbstractRadioMedium {
@@ -121,7 +122,7 @@ public class LogisticLoss extends AbstractRadioMedium {
     /* The standard deviation of the AWGN distribution */
     public double AWGN_SIGMA = 3.0;
 
-    /* 
+    /*
      * This is required to implement the Capture Effect.
      * The co-channel rejection threshold of 802.15.4 radios typically is -3 dB.
      */
@@ -155,44 +156,44 @@ public class LogisticLoss extends AbstractRadioMedium {
         super(simulation);
         random = simulation.getRandomGenerator();
         dgrm = new DirectedGraphMedium(simulation) {
-                @Override
-                protected void analyzeEdges() {
-                    /* Create edges according to distances.
-                     * XXX May be slow for mobile networks */
-                    clearEdges();
-                    /* XXX: do not remove the time-varying edges to preserve their evolution */
+            @Override
+            protected void analyzeEdges() {
+                /* Create edges according to distances.
+                 * XXX May be slow for mobile networks */
+                clearEdges();
+                /* XXX: do not remove the time-varying edges to preserve their evolution */
 
-                    for (Radio source: LogisticLoss.this.getRegisteredRadios()) {
-                        Position sourcePos = source.getPosition();
-                        int sourceID = source.getMote().getID();
-                        for (Radio dest: LogisticLoss.this.getRegisteredRadios()) {
-                            Position destPos = dest.getPosition();
-                            /* Ignore ourselves */
-                            if (source == dest) {
-                                continue;
-                            }
-                            double distance = sourcePos.getDistanceTo(destPos);
-                            if (distance < TRANSMITTING_RANGE) {
-                                /* Add potential destination */
-                                addEdge(
-                                        new DirectedGraphMedium.Edge(source, 
-                                                new DGRMDestinationRadio(dest)));
+                for (Radio source : LogisticLoss.this.getRegisteredRadios()) {
+                    Position sourcePos = source.getPosition();
+                    int sourceID = source.getMote().getID();
+                    for (Radio dest : LogisticLoss.this.getRegisteredRadios()) {
+                        Position destPos = dest.getPosition();
+                        /* Ignore ourselves */
+                        if (source == dest) {
+                            continue;
+                        }
+                        double distance = sourcePos.getDistanceTo(destPos);
+                        if (distance < TRANSMITTING_RANGE) {
+                            /* Add potential destination */
+                            addEdge(
+                                    new DirectedGraphMedium.Edge(source,
+                                            new DGRMDestinationRadio(dest)));
 
-                                if (ENABLE_TIME_VARIATION) {
-                                    int destID = dest.getMote().getID();
-                                    if (sourceID < destID) {
-                                        Index key = new Index(sourceID, destID);
-                                        if (!edgesTable.containsKey(key)) {
-                                            edgesTable.put(key, new TimeVaryingEdge());
-                                        }
+                            if (ENABLE_TIME_VARIATION) {
+                                int destID = dest.getMote().getID();
+                                if (sourceID < destID) {
+                                    Index key = new Index(sourceID, destID);
+                                    if (!edgesTable.containsKey(key)) {
+                                        edgesTable.put(key, new TimeVaryingEdge());
                                     }
                                 }
                             }
                         }
                     }
-                    super.analyzeEdges();
                 }
-            };
+                super.analyzeEdges();
+            }
+        };
 
         /* Register as position observer.
          * If any positions change, re-analyze potential receivers. */
@@ -225,7 +226,7 @@ public class LogisticLoss extends AbstractRadioMedium {
 
         /* Loop through all potential destinations */
         Position senderPos = sender.getPosition();
-        for (DestinationRadio dest: potentialDestinations) {
+        for (DestinationRadio dest : potentialDestinations) {
             Radio recv = dest.radio;
 
             /* Fail if radios are on different (but configured) channels */
@@ -263,14 +264,14 @@ public class LogisticLoss extends AbstractRadioMedium {
                          * XXX: this is a simplified check. Rather than looking at all N potential senders,
                          * it looks at just this and the strongest one of the previous transmissions
                          * (since updateSignalStrengths() updates the signal strength iff the previous one is weaker)
-                        */
+                         */
 
                         double oldSignal = recv.getCurrentSignalStrength();
                         double newSignal = getRSSI(sender, recv);
 
                         boolean doInterfereOld;
 
-                        if(oldSignal + CO_CHANNEL_REJECTION > newSignal) {
+                        if (oldSignal + CO_CHANNEL_REJECTION > newSignal) {
                             /* keep the old transmission */
                             doInterfereOld = false;
                             receiveNewOk = false;
@@ -291,7 +292,7 @@ public class LogisticLoss extends AbstractRadioMedium {
                             recv.interfereAnyReception();
                         }
 
-                        if(doInterfereOld) {
+                        if (doInterfereOld) {
                             /* Find all existing connections and interfere them */
                             for (RadioConnection conn : getActiveConnections()) {
                                 if (conn.isDestination(recv)) {
@@ -303,7 +304,7 @@ public class LogisticLoss extends AbstractRadioMedium {
                         }
                     }
 
-                    if(receiveNewOk) {
+                    if (receiveNewOk) {
                         /* Success: radio starts receiving */
                         newConnection.addDestination(recv);
                         /* logger.info(sender + ": tx to " + recv); */
@@ -317,10 +318,11 @@ public class LogisticLoss extends AbstractRadioMedium {
 
         return newConnection;
     }
-  
+
     public double getSuccessProbability(Radio source, Radio dest) {
         return getTxSuccessProbability() * getRxSuccessProbability(source, dest);
     }
+
     public double getTxSuccessProbability() {
         return SUCCESS_RATIO_TX;
     }
@@ -361,7 +363,7 @@ public class LogisticLoss extends AbstractRadioMedium {
     }
 
     private void updateTimeVariationComponent() {
-        long period = (long)(simulation.getSimulationTimeMillis() / (1000.0 * TIME_VARIATION_STEP_SEC));
+        long period = (long) (simulation.getSimulationTimeMillis() / (1000.0 * TIME_VARIATION_STEP_SEC));
 
         if (dgrm.needsEdgeAnalysis()) {
             dgrm.analyzeEdges();
@@ -380,10 +382,10 @@ public class LogisticLoss extends AbstractRadioMedium {
     protected void updateSignalStrengths() {
         /* Override: uses distance as signal strength factor */
 
-        if(ENABLE_TIME_VARIATION) {
+        if (ENABLE_TIME_VARIATION) {
             updateTimeVariationComponent();
         }
-    
+
         /* Reset signal strengths */
         for (Radio radio : getRegisteredRadios()) {
             radio.setCurrentSignalStrength(getBaseRssi(radio));
@@ -479,7 +481,7 @@ public class LogisticLoss extends AbstractRadioMedium {
         element.setText(String.valueOf(ENABLE_TIME_VARIATION));
         config.add(element);
 
-        if(ENABLE_TIME_VARIATION) {
+        if (ENABLE_TIME_VARIATION) {
             /* Time-variable path loss bounds */
             element = new Element("time_variation_min_pl_db");
             element.setText(String.valueOf(TIME_VARIATION_MIN_PL_DB));
@@ -518,19 +520,19 @@ public class LogisticLoss extends AbstractRadioMedium {
             }
 
             if (element.getName().equals("awgn_sigma")) {
-                 AWGN_SIGMA = Double.parseDouble(element.getText());
+                AWGN_SIGMA = Double.parseDouble(element.getText());
             }
 
             if (element.getName().equals("enable_time_variation")) {
-                 ENABLE_TIME_VARIATION = Boolean.parseBoolean(element.getText());
+                ENABLE_TIME_VARIATION = Boolean.parseBoolean(element.getText());
             }
 
             if (element.getName().equals("time_variation_min_pl_db")) {
-                 TIME_VARIATION_MIN_PL_DB = Double.parseDouble(element.getText());
+                TIME_VARIATION_MIN_PL_DB = Double.parseDouble(element.getText());
             }
 
             if (element.getName().equals("time_variation_max_pl_db")) {
-                 TIME_VARIATION_MAX_PL_DB = Double.parseDouble(element.getText());
+                TIME_VARIATION_MAX_PL_DB = Double.parseDouble(element.getText());
             }
         }
         return true;
@@ -542,7 +544,7 @@ public class LogisticLoss extends AbstractRadioMedium {
         private final int y;
 
         Index(int a, int b) {
-            if(a <= b) {
+            if (a <= b) {
                 this.x = a;
                 this.y = b;
             } else {
@@ -567,7 +569,7 @@ public class LogisticLoss extends AbstractRadioMedium {
             Index other = (Index) obj;
             if (x != other.x)
                 return false;
-          return y == other.y;
+            return y == other.y;
         }
     }
 
