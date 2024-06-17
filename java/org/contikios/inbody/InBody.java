@@ -1,6 +1,7 @@
 package org.contikios.inbody;
 
 import org.contikios.cooja.ClassDescription;
+import org.contikios.cooja.Cooja;
 import org.contikios.cooja.RadioConnection;
 import org.contikios.cooja.Simulation;
 import org.contikios.cooja.interfaces.Radio;
@@ -12,6 +13,10 @@ import java.util.List;
 public class InBody  extends AbstractRadioMedium {
     public InBody(Simulation simulation) {
         super(simulation);
+
+        if (Cooja.isVisualized()) {
+            simulation.getCooja().registerPlugin(PhantomViewer.class);
+        }
     }
 
     @Override
@@ -22,6 +27,10 @@ public class InBody  extends AbstractRadioMedium {
     @Override
     public void removed() {
         super.removed();
+
+        if (Cooja.isVisualized()) {
+            simulation.getCooja().unregisterPlugin(PhantomViewer.class);
+        }
     }
 
     @Override
