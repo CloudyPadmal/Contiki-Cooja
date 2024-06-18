@@ -10,7 +10,7 @@ import org.contikios.cooja.radiomediums.AbstractRadioMedium;
 import java.util.List;
 
 @ClassDescription("Fat Tissue-based In-Body Radio Medium (Fat-IBC)")
-public class InBody  extends AbstractRadioMedium {
+public class InBody extends AbstractRadioMedium {
     public InBody(Simulation simulation) {
         super(simulation);
 
