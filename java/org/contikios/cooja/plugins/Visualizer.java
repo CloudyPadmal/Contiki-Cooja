@@ -230,6 +230,7 @@ public class Visualizer extends VisPlugin implements HasQuickHelp {
     registerVisualizerSkin(LogisticLossVisualizerSkin.class);
     registerVisualizerSkin(MRMVisualizerSkin.class);
     registerVisualizerSkin(UDGMVisualizerSkin.class);
+    // TODO: Register in-body visualizer skins.
     String[] skins = gui.getProjectConfig().getStringArrayValue(Visualizer.class, "SKINS");
 
     for (String skinClass : skins) {
@@ -847,6 +848,7 @@ public class Visualizer extends VisPlugin implements HasQuickHelp {
     generateAndActivateSkin(UDGMVisualizerSkin.class);
     generateAndActivateSkin(LogisticLossVisualizerSkin.class);
     generateAndActivateSkin(MRMVisualizerSkin.class);
+    // TODO: Add in-body visualizer skins.
     String[] defaultSkins = Cooja.getExternalToolsSetting("VISUALIZER_DEFAULT_SKINS", "").split(";");
     for (String skin : defaultSkins) {
       if (skin.isEmpty()) {
