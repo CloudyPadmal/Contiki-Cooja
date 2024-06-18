@@ -15,7 +15,7 @@ public class InBody extends AbstractRadioMedium {
         super(simulation);
 
         if (Cooja.isVisualized()) {
-            simulation.getCooja().registerPlugin(PhantomViewer.class);
+
         }
     }
 
@@ -29,7 +29,7 @@ public class InBody extends AbstractRadioMedium {
         super.removed();
 
         if (Cooja.isVisualized()) {
-            simulation.getCooja().unregisterPlugin(PhantomViewer.class);
+
         }
     }
 
