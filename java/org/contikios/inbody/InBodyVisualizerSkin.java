@@ -4,23 +4,33 @@ import org.contikios.cooja.Mote;
 import org.contikios.cooja.Simulation;
 import org.contikios.cooja.plugins.Visualizer;
 import org.contikios.cooja.plugins.VisualizerSkin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.Set;
 
 public class InBodyVisualizerSkin implements VisualizerSkin {
+    private static final Logger logger = LoggerFactory.getLogger(InBodyVisualizerSkin.class);
     private Simulation simulation;
     private Visualizer visualizer;
 
     @Override
-    public void setActive(Simulation sim, Visualizer visualizer) {
+    public void setActive(Simulation simulation, Visualizer visualizer) {
+        if (!(simulation.getRadioMedium() instanceof InBody)) {
+            logger.error("Cannot activate In-body skin for unknown radio medium: " + simulation.getRadioMedium());
+            return;
+        }
         this.simulation = simulation;
         this.visualizer = visualizer;
     }
 
     @Override
     public void setInactive() {
-
+        if (simulation == null) {
+            // Skin was never activated
+            return;
+        }
     }
 
     @Override
