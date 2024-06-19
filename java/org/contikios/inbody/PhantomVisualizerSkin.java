@@ -22,7 +22,7 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
     private static final Color COLOR_SKIN = new Color(250, 219, 77, 128);
     private static final Color COLOR_FAT = new Color(245, 166, 35, 128);
     private static final Color COLOR_MUSCLE = new Color(208, 2, 27, 128);
-    private static final Color COLOR_BOUNDARY = new Color(0, 0, 0, 255);
+    private static final Color COLOR_BOUNDARY = new Color(0, 0, 0, 128);
 
     private static final double PHANTOM_BOUND_WIDTH = 2;
     private static double PHANTOM_LENGTH = 300;
@@ -116,22 +116,27 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
 
         // Draw around a fixed coordinate
         Point gridCenter = visualizer.transformPositionToPixel(0, 0, 0);
+
         Point phantomLengthEdge = visualizer.transformPositionToPixel(PHANTOM_LENGTH, 0, 0);
+        int phantomWidth = phantomLengthEdge.x - gridCenter.x;
+
         Point phantomSkinEdge = visualizer.transformPositionToPixel(0, SKIN_THICKNESS, 0);
         int phantomSkinHeight = visualizer.transformPositionToPixel(0, SKIN_THICKNESS, 0).y - gridCenter.y;
+
         Point phantomFatEdge = visualizer.transformPositionToPixel(0, FAT_THICKNESS + SKIN_THICKNESS, 0);
         int phantomFatHeight = visualizer.transformPositionToPixel(0, FAT_THICKNESS, 0).y - gridCenter.y;
+
         Point phantomMuscleEdge = visualizer.transformPositionToPixel(0, MUSCLE_THICKNESS + FAT_THICKNESS + SKIN_THICKNESS, 0);
         int phantomMuscleHeight = visualizer.transformPositionToPixel(0, MUSCLE_THICKNESS, 0).y - gridCenter.y;
+
         Point phantomBoundEdge = visualizer.transformPositionToPixel(PHANTOM_BOUND_WIDTH, 0, 0);
         int phantomBoundWidth = phantomBoundEdge.x - gridCenter.x;
+        int phantomBoundHeight = phantomMuscleEdge.y - gridCenter.y;
 
         // Draw skin
         skinRegion.add(new Area(new Rectangle(
-                gridCenter.x,
-                gridCenter.y,
-                phantomLengthEdge.x - gridCenter.x,
-                phantomSkinHeight)));
+                gridCenter.x, gridCenter.y,
+                phantomWidth, phantomSkinHeight)));
         g.setColor(COLOR_SKIN);
         ((Graphics2D) g).fill(skinRegion);
         g.setColor(Color.GRAY);
@@ -139,10 +144,8 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
 
         // Draw fat
         fatRegion.add(new Area(new Rectangle(
-                gridCenter.x,
-                phantomSkinEdge.y,
-                phantomLengthEdge.x - gridCenter.x,
-                phantomFatHeight)));
+                gridCenter.x, phantomSkinEdge.y,
+                phantomWidth, phantomFatHeight)));
         g.setColor(COLOR_FAT);
         ((Graphics2D) g).fill(fatRegion);
         g.setColor(Color.GRAY);
@@ -150,30 +153,27 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
 
         // Draw muscle
         muscleRegion.add(new Area(new Rectangle(
-                gridCenter.x,
-                phantomFatEdge.y,
-                phantomLengthEdge.x - gridCenter.x,
-                phantomMuscleHeight)));
+                gridCenter.x, phantomFatEdge.y,
+                phantomWidth, phantomMuscleHeight)));
         g.setColor(COLOR_MUSCLE);
         ((Graphics2D) g).fill(muscleRegion);
         g.setColor(Color.GRAY);
         ((Graphics2D) g).draw(muscleRegion);
 
         // Draw blocking bounds on either side of the phantom
-        rightBoundRegion.add(new Area(new Rectangle(
-                phantomLengthEdge.x,
-                gridCenter.y,
-                phantomBoundWidth,
-                phantomMuscleEdge.y - gridCenter.y)));
-        leftBoundRegion.add(new Area(new Rectangle(
-                gridCenter.x - phantomBoundWidth,
-                gridCenter.y,
-                phantomBoundWidth,
-                phantomMuscleEdge.y - gridCenter.y)));
         g.setColor(COLOR_BOUNDARY);
-        ((Graphics2D) g).fill(rightBoundRegion);
-        ((Graphics2D) g).fill(leftBoundRegion);
 
+        leftBoundRegion.add(new Area(new Rectangle(
+                gridCenter.x - phantomBoundWidth, gridCenter.y,
+                phantomBoundWidth, phantomBoundHeight)));
+        ((Graphics2D) g).fill(leftBoundRegion);
+        ((Graphics2D) g).draw(leftBoundRegion);
+
+        rightBoundRegion.add(new Area(new Rectangle(
+                phantomLengthEdge.x, gridCenter.y,
+                phantomBoundWidth, phantomBoundHeight)));
+        ((Graphics2D) g).fill(rightBoundRegion);
+        ((Graphics2D) g).draw(rightBoundRegion);
     }
 
     @Override
