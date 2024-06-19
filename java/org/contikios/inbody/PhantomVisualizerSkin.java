@@ -30,6 +30,9 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
     private static final double FAT_THICKNESS = 25;
     private static final double MUSCLE_THICKNESS = 30;
 
+    private Area skinRegion;
+    private Area fatRegion;
+    private Area muscleRegion;
 
     private Simulation simulation;
     private Visualizer visualizer;
@@ -174,6 +177,23 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
                 phantomBoundWidth, phantomBoundHeight)));
         ((Graphics2D) g).fill(rightBoundRegion);
         ((Graphics2D) g).draw(rightBoundRegion);
+
+        // Save the regions to use with signal propagation
+        this.skinRegion = skinRegion;
+        this.fatRegion = fatRegion;
+        this.muscleRegion = muscleRegion;
+    }
+
+    public Area getSkinRegion() {
+        return skinRegion;
+    }
+
+    public Area getFatRegion() {
+        return fatRegion;
+    }
+
+    public Area getMuscleRegion() {
+        return muscleRegion;
     }
 
     @Override
