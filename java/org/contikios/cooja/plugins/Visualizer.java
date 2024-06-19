@@ -111,6 +111,8 @@ import org.contikios.cooja.plugins.skins.TrafficVisualizerSkin;
 import org.contikios.cooja.plugins.skins.UDGMVisualizerSkin;
 import org.contikios.cooja.util.Annotations;
 import org.contikios.cooja.util.EventTriggers;
+import org.contikios.inbody.InBodyVisualizerSkin;
+import org.contikios.inbody.PhantomVisualizerSkin;
 import org.contikios.mrm.MRMVisualizerSkin;
 import org.jdom2.Element;
 import org.slf4j.Logger;
@@ -230,7 +232,8 @@ public class Visualizer extends VisPlugin implements HasQuickHelp {
     registerVisualizerSkin(LogisticLossVisualizerSkin.class);
     registerVisualizerSkin(MRMVisualizerSkin.class);
     registerVisualizerSkin(UDGMVisualizerSkin.class);
-    // TODO: Register in-body visualizer skins.
+    registerVisualizerSkin(InBodyVisualizerSkin.class);
+    registerVisualizerSkin(PhantomVisualizerSkin.class);
     String[] skins = gui.getProjectConfig().getStringArrayValue(Visualizer.class, "SKINS");
 
     for (String skinClass : skins) {
@@ -848,7 +851,8 @@ public class Visualizer extends VisPlugin implements HasQuickHelp {
     generateAndActivateSkin(UDGMVisualizerSkin.class);
     generateAndActivateSkin(LogisticLossVisualizerSkin.class);
     generateAndActivateSkin(MRMVisualizerSkin.class);
-    // TODO: Add in-body visualizer skins.
+    generateAndActivateSkin(InBodyVisualizerSkin.class);
+    generateAndActivateSkin(PhantomVisualizerSkin.class);
     String[] defaultSkins = Cooja.getExternalToolsSetting("VISUALIZER_DEFAULT_SKINS", "").split(";");
     for (String skin : defaultSkins) {
       if (skin.isEmpty()) {
