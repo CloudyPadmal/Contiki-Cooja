@@ -1,5 +1,6 @@
 package org.contikios.inbody;
 
+import org.contikios.cooja.ClassDescription;
 import org.contikios.cooja.Mote;
 import org.contikios.cooja.Simulation;
 import org.contikios.cooja.plugins.Visualizer;
@@ -16,6 +17,7 @@ import java.beans.PropertyVetoException;
 
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
+@ClassDescription("Phantom Setup")
 public class PhantomVisualizerSkin implements VisualizerSkin {
     private static final Logger logger = LoggerFactory.getLogger(PhantomVisualizerSkin.class);
 

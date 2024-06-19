@@ -1,5 +1,6 @@
 package org.contikios.inbody;
 
+import org.contikios.cooja.ClassDescription;
 import org.contikios.cooja.Mote;
 import org.contikios.cooja.Simulation;
 import org.contikios.cooja.plugins.Visualizer;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.util.Set;
 
+@ClassDescription("In-body signals")
 public class InBodyVisualizerSkin implements VisualizerSkin {
     private static final Logger logger = LoggerFactory.getLogger(InBodyVisualizerSkin.class);
     private Simulation simulation;
