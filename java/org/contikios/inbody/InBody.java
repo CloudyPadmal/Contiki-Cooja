@@ -11,12 +11,16 @@ import java.util.List;
 
 @ClassDescription("Fat Tissue-based In-Body Radio Medium (Fat-IBC)")
 public class InBody extends AbstractRadioMedium {
+
+    private final InBodyChannelModel channelModel;
+
     public InBody(Simulation simulation) {
         super(simulation);
+        channelModel = new InBodyChannelModel(simulation);
+    }
 
-        if (Cooja.isVisualized()) {
-
-        }
+    public InBodyChannelModel getChannelModel() {
+        return channelModel;
     }
 
     @Override
@@ -27,10 +31,6 @@ public class InBody extends AbstractRadioMedium {
     @Override
     public void removed() {
         super.removed();
-
-        if (Cooja.isVisualized()) {
-
-        }
     }
 
     @Override

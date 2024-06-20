@@ -2,7 +2,9 @@ package org.contikios.inbody;
 
 import org.contikios.cooja.ClassDescription;
 import org.contikios.cooja.Mote;
+import org.contikios.cooja.RadioMedium;
 import org.contikios.cooja.Simulation;
+import org.contikios.cooja.interfaces.Position;
 import org.contikios.cooja.plugins.Visualizer;
 import org.contikios.cooja.plugins.VisualizerSkin;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import java.awt.geom.Area;
 import java.beans.PropertyVetoException;
 
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import static org.openjdk.nashorn.internal.objects.NativeMath.abs;
 
 @ClassDescription("Phantom Setup")
 public class PhantomVisualizerSkin implements VisualizerSkin {
@@ -25,16 +28,16 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
     private static final Color COLOR_FAT = new Color(245, 166, 35, 128);
     private static final Color COLOR_MUSCLE = new Color(208, 2, 27, 128);
     private static final Color COLOR_BOUNDARY = new Color(0, 0, 0, 128);
+    private static final Color COLOR_RESTRICTED = new Color(192, 192, 192, 64);
 
     private static final double PHANTOM_BOUND_WIDTH = 2;
+    private static double RESTRICTED_WIDTH = 300;
     private static double PHANTOM_LENGTH = 300;
     private static final double SKIN_THICKNESS = 1;
     private static final double FAT_THICKNESS = 25;
     private static final double MUSCLE_THICKNESS = 30;
 
-    private Area skinRegion;
-    private Area fatRegion;
-    private Area muscleRegion;
+    private InBodyChannelModel channelModel;
 
     private Simulation simulation;
     private Visualizer visualizer;
@@ -44,23 +47,37 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
 
     @Override
     public void setActive(Simulation simulation, Visualizer visualizer) {
-        if (!(simulation.getRadioMedium() instanceof InBody)) {
+        if (!(simulation.getRadioMedium() instanceof InBody radioMedium)) {
             logger.error("Cannot activate In-body skin for unknown radio medium: " + simulation.getRadioMedium());
             return;
         }
         this.simulation = simulation;
         this.visualizer = visualizer;
 
+        channelModel = radioMedium.getChannelModel();
+
         // GUI dialog to set phantom parameters
         SpinnerNumberModel phantomLengthModel = new SpinnerNumberModel(300, 300, 1000, 1);
         JSpinner phantomLengthSpinner = new JSpinner(phantomLengthModel);
-        JSpinner.NumberEditor editor = new JSpinner.NumberEditor(phantomLengthSpinner, "0 mm");
-        phantomLengthSpinner.setEditor(editor);
+        JSpinner.NumberEditor editorL = new JSpinner.NumberEditor(phantomLengthSpinner, "0 mm");
+        phantomLengthSpinner.setEditor(editorL);
 
         ((JSpinner.DefaultEditor) phantomLengthSpinner.getEditor()).getTextField().setColumns(5);
         phantomLengthSpinner.setToolTipText("Length of the phantom (mm)");
         phantomLengthSpinner.addChangeListener(e -> {
             PHANTOM_LENGTH = (int) phantomLengthModel.getValue();
+            visualizer.repaint();
+        });
+
+        SpinnerNumberModel restrictedLengthModel = new SpinnerNumberModel(300, 300, 1000, 10);
+        JSpinner restrictedLengthSpinner = new JSpinner(restrictedLengthModel);
+        JSpinner.NumberEditor editorR = new JSpinner.NumberEditor(restrictedLengthSpinner, "0 mm");
+        restrictedLengthSpinner.setEditor(editorR);
+
+        ((JSpinner.DefaultEditor) restrictedLengthSpinner.getEditor()).getTextField().setColumns(5);
+        restrictedLengthSpinner.setToolTipText("Restricted region (mm)");
+        restrictedLengthSpinner.addChangeListener(e -> {
+            RESTRICTED_WIDTH = (int) restrictedLengthModel.getValue();
             visualizer.repaint();
         });
 
@@ -74,10 +91,15 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
         phantomLengthBox.add(new JLabel("Phantom Length: "));
         phantomLengthBox.add(Box.createHorizontalStrut(5));
         phantomLengthBox.add(phantomLengthSpinner);
+        Box restrictedLengthBox = Box.createHorizontalBox();
+        restrictedLengthBox.add(new JLabel("Restriction Area: "));
+        restrictedLengthBox.add(Box.createHorizontalStrut(5));
+        restrictedLengthBox.add(restrictedLengthSpinner);
 
         miniDialogBoxContent.add(phantomLengthBox);
+        miniDialogBoxContent.add(restrictedLengthBox);
 
-        miniDialogBox = new JInternalFrame("Phantom Length", false, true);
+        miniDialogBox = new JInternalFrame("Phantom Parameters", false, true);
         miniDialogBox.setVisible(false);
         miniDialogBox.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         miniDialogBox.addInternalFrameListener(new InternalFrameAdapter() {
@@ -116,6 +138,7 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
         Area skinRegion = new Area();
         Area fatRegion = new Area();
         Area muscleRegion = new Area();
+
         Area rightBoundRegion = new Area();
         Area leftBoundRegion = new Area();
 
@@ -137,6 +160,10 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
         Point phantomBoundEdge = visualizer.transformPositionToPixel(PHANTOM_BOUND_WIDTH, 0, 0);
         int phantomBoundWidth = phantomBoundEdge.x - gridCenter.x;
         int phantomBoundHeight = phantomMuscleEdge.y - gridCenter.y;
+
+        Point restrictedRightEdge = visualizer.transformPositionToPixel(PHANTOM_LENGTH, 0, 0);
+        Point restrictedLeftEdge = visualizer.transformPositionToPixel(0, 0, 0);
+        Point restrictedBottomEdge = visualizer.transformPositionToPixel(0, SKIN_THICKNESS + FAT_THICKNESS + MUSCLE_THICKNESS, 0);
 
         // Draw skin
         skinRegion.add(new Area(new Rectangle(
@@ -165,6 +192,24 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
         g.setColor(Color.GRAY);
         ((Graphics2D) g).draw(muscleRegion);
 
+        // Mark the surrounding sides of the phantom as undefined space except above the phantom
+        Area restrictedRegion = new Area();
+        restrictedRegion.add(new Area(new Rectangle(
+                gridCenter.x, restrictedBottomEdge.y,
+                restrictedRightEdge.x - gridCenter.x,
+                visualizer.transformPositionToPixel(0, RESTRICTED_WIDTH, 0).y - restrictedBottomEdge.y)));
+        restrictedRegion.add(new Area(new Rectangle(
+                restrictedRightEdge.x, visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y,
+                visualizer.transformPositionToPixel(PHANTOM_LENGTH, 0, 0).x - gridCenter.x,
+                Math.abs(visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y - visualizer.transformPositionToPixel(0, RESTRICTED_WIDTH, 0).y))));
+        restrictedRegion.add(new Area(new Rectangle(
+                visualizer.transformPositionToPixel(-RESTRICTED_WIDTH, 0, 0).x,
+                visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y,
+                gridCenter.x - visualizer.transformPositionToPixel(-RESTRICTED_WIDTH, 0, 0).x,
+                Math.abs(visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y - visualizer.transformPositionToPixel(0, RESTRICTED_WIDTH, 0).y))));
+        g.setColor(COLOR_RESTRICTED);
+        ((Graphics2D) g).fill(restrictedRegion);
+
         // Draw blocking bounds on either side of the phantom
         g.setColor(COLOR_BOUNDARY);
 
@@ -181,21 +226,16 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
         ((Graphics2D) g).draw(rightBoundRegion);
 
         // Save the regions to use with signal propagation
-        this.skinRegion = skinRegion;
-        this.fatRegion = fatRegion;
-        this.muscleRegion = muscleRegion;
-    }
+        Area airRegion = new Area();
+        airRegion.add(new Area(new Rectangle(
+                gridCenter.x, visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y,
+                restrictedRightEdge.x - gridCenter.x,
+                Math.abs(gridCenter.y - visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y))));
 
-    public Area getSkinRegion() {
-        return skinRegion;
-    }
+        g.setColor(Color.RED);
+        ((Graphics2D) g).fill(airRegion);
 
-    public Area getFatRegion() {
-        return fatRegion;
-    }
-
-    public Area getMuscleRegion() {
-        return muscleRegion;
+        channelModel.setPhantomBoundaries(new Area[]{skinRegion, fatRegion, muscleRegion, restrictedRegion, airRegion});
     }
 
     @Override
