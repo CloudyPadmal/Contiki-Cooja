@@ -78,11 +78,20 @@ public class InBodyVisualizerSkin implements VisualizerSkin {
             signalArea.subtract(skinArea);
             signalArea.subtract(muscleArea);
             signalArea.subtract(restrictedArea);
+            Area signalAirArea = new Area(signalArea);
+            signalArea.subtract(airArea);
             RadialGradientPaint paint = new RadialGradientPaint(
                     x, y,
                     (int) (radioRange.x/2), new float[]{0.0f, 1.0f}, new Color[]{Color.GREEN, Color.WHITE});
             ((Graphics2D) g).setPaint(paint);
             ((Graphics2D) g).fill(signalArea);
+
+            signalAirArea.subtract(signalArea);
+            RadialGradientPaint paint2 = new RadialGradientPaint(
+                    x, y,
+                    (int) (radioRange.x/2), new float[]{0.0f, 1.0f}, new Color[]{Color.YELLOW, Color.WHITE});
+            ((Graphics2D) g).setPaint(paint2);
+            ((Graphics2D) g).fill(signalAirArea);
         }
         Mote[] allMotes = simulation.getMotes();
 

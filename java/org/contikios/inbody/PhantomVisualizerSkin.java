@@ -232,9 +232,6 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
                 restrictedRightEdge.x - gridCenter.x,
                 Math.abs(gridCenter.y - visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y))));
 
-        g.setColor(Color.RED);
-        ((Graphics2D) g).fill(airRegion);
-
         channelModel.setPhantomBoundaries(new Area[]{skinRegion, fatRegion, muscleRegion, restrictedRegion, airRegion});
     }
 
