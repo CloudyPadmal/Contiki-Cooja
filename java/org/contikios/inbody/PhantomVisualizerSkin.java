@@ -200,7 +200,7 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
                 visualizer.transformPositionToPixel(0, RESTRICTED_WIDTH, 0).y - restrictedBottomEdge.y)));
         restrictedRegion.add(new Area(new Rectangle(
                 restrictedRightEdge.x, visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y,
-                visualizer.transformPositionToPixel(PHANTOM_LENGTH, 0, 0).x - gridCenter.x,
+                visualizer.transformPositionToPixel(RESTRICTED_WIDTH, 0, 0).x - gridCenter.x,
                 Math.abs(visualizer.transformPositionToPixel(0, -RESTRICTED_WIDTH, 0).y - visualizer.transformPositionToPixel(0, RESTRICTED_WIDTH, 0).y))));
         restrictedRegion.add(new Area(new Rectangle(
                 visualizer.transformPositionToPixel(-RESTRICTED_WIDTH, 0, 0).x,
