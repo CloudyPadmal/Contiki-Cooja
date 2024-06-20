@@ -17,6 +17,12 @@ import java.util.Set;
 @ClassDescription("In-body signals")
 public class InBodyVisualizerSkin implements VisualizerSkin {
     private static final Logger logger = LoggerFactory.getLogger(InBodyVisualizerSkin.class);
+    private static final Color COLOR_FAT = new Color(245, 166, 35, 128);
+    private static final Color COLOR_SIGNAL_FAT = new Color(0, 255, 0, 128);
+    private static final Color COLOR_SIGNAL_AIR = new Color(255, 255, 0, 128);
+
+    private static double RADIUS = 25.0;
+
     private Simulation simulation;
     private Visualizer visualizer;
 
@@ -66,15 +72,19 @@ public class InBodyVisualizerSkin implements VisualizerSkin {
                 continue;
             }
             Point mote_point = visualizer.transformPositionToPixel(mote_pos);
+            if (restrictedArea.contains(mote_point) || muscleArea.contains(mote_point)) {
+                continue;
+            }
             int x = mote_point.x;
             int y = mote_point.y;
+            int radius = Math.abs(x - visualizer.transformPositionToPixel(RADIUS, 0, 0).x);
+            System.out.println("Radius: " + radius);
             Point radioRange = visualizer.transformPositionToPixel(25, 25, 0);
 
             // Draw the signal distribution pattern of the mote
             g.setColor(Color.GREEN);
             signalArea.add(new Area(new Ellipse2D.Double(
                     x - (int) (radioRange.x / 2), y - (int) (radioRange.x / 2), radioRange.x, radioRange.x)));
-            System.out.println((int) (radioRange.x / 2) + " " + radioRange.x + " " + (int) (radioRange.y / 2));
             signalArea.subtract(skinArea);
             signalArea.subtract(muscleArea);
             signalArea.subtract(restrictedArea);
@@ -82,14 +92,14 @@ public class InBodyVisualizerSkin implements VisualizerSkin {
             signalArea.subtract(airArea);
             RadialGradientPaint paint = new RadialGradientPaint(
                     x, y,
-                    (int) (radioRange.x/2), new float[]{0.0f, 1.0f}, new Color[]{Color.GREEN, Color.WHITE});
+                    (int) (radioRange.x/2), new float[]{0.0f, 1.0f}, new Color[]{COLOR_SIGNAL_FAT, COLOR_FAT});
             ((Graphics2D) g).setPaint(paint);
             ((Graphics2D) g).fill(signalArea);
 
             signalAirArea.subtract(signalArea);
             RadialGradientPaint paint2 = new RadialGradientPaint(
                     x, y,
-                    (int) (radioRange.x/2), new float[]{0.0f, 1.0f}, new Color[]{Color.YELLOW, Color.WHITE});
+                    (int) (radioRange.x/2), new float[]{0.0f, 1.0f}, new Color[]{COLOR_SIGNAL_AIR, Color.WHITE});
             ((Graphics2D) g).setPaint(paint2);
             ((Graphics2D) g).fill(signalAirArea);
         }

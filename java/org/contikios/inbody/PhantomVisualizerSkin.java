@@ -2,9 +2,7 @@ package org.contikios.inbody;
 
 import org.contikios.cooja.ClassDescription;
 import org.contikios.cooja.Mote;
-import org.contikios.cooja.RadioMedium;
 import org.contikios.cooja.Simulation;
-import org.contikios.cooja.interfaces.Position;
 import org.contikios.cooja.plugins.Visualizer;
 import org.contikios.cooja.plugins.VisualizerSkin;
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ import java.awt.geom.Area;
 import java.beans.PropertyVetoException;
 
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import static org.openjdk.nashorn.internal.objects.NativeMath.abs;
 
 @ClassDescription("Phantom Setup")
 public class PhantomVisualizerSkin implements VisualizerSkin {
@@ -278,7 +275,7 @@ public class PhantomVisualizerSkin implements VisualizerSkin {
 
         @Override
         public String getDescription(Visualizer visualizer, Simulation simulation) {
-            return "Set phantom length";
+            return "Phantom parameters ...";
         }
 
         @Override
