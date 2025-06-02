@@ -51,7 +51,7 @@
 #define LOG_LEVEL LOG_LEVEL_INFO
 
 /* Configuration */
-#define SEND_INTERVAL (2 * CLOCK_SECOND)
+#define SEND_INTERVAL (CLOCK_SECOND * 1e-3)
 
 #if MAC_CONF_WITH_TSCH
 #include "net/mac/tsch/tsch.h"
@@ -59,31 +59,31 @@ static linkaddr_t coordinator_addr =  {{ 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0
 #endif /* MAC_CONF_WITH_TSCH */
 
 /*---------------------------------------------------------------------------*/
-PROCESS(nullnet_example_process, "NullNet broadcast example");
-AUTOSTART_PROCESSES(&nullnet_example_process);
+PROCESS(cooja_example_process, "NullNet broadcast example");
+AUTOSTART_PROCESSES(&cooja_example_process);
 
 /*---------------------------------------------------------------------------*/
 void input_callback(const void *data, uint16_t len,
   const linkaddr_t *src, const linkaddr_t *dest)
 {
   if(len == sizeof(unsigned)) {
-    int16_t packet_rssi = packetbuf_attr(PACKETBUF_ATTR_RSSI);
-    int16_t packet_lqi = packetbuf_attr(PACKETBUF_ATTR_LINK_QUALITY);
     unsigned count;
+    int sniffed_rssi;
+    int channel;
+    NETSTACK_CONF_RADIO.get_value(RADIO_PARAM_RSSI, &sniffed_rssi);
+    NETSTACK_CONF_RADIO.get_value(RADIO_PARAM_CHANNEL, &channel);
     memcpy(&count, data, sizeof(count));
-    LOG_INFO("Received %u from ", count);
+    LOG_INFO("Received %u with RSSI [%d] in channel %d from ", count, sniffed_rssi, channel);
     LOG_INFO_LLADDR(src);
-    LOG_INFO_(" [RSSI: %d", packet_rssi);
-    LOG_INFO_(" | LQI: %d]", packet_lqi);
     LOG_INFO_("\n");
   }
 }
 /*---------------------------------------------------------------------------*/
-PROCESS_THREAD(nullnet_example_process, ev, data)
+PROCESS_THREAD(cooja_example_process, ev, data)
 {
   static struct etimer periodic_timer;
   static unsigned count = 0;
-
+  static unsigned tmr_count = 0;
   PROCESS_BEGIN();
 
 #if MAC_CONF_WITH_TSCH
@@ -95,18 +95,33 @@ PROCESS_THREAD(nullnet_example_process, ev, data)
   nullnet_len = sizeof(count);
   nullnet_set_input_callback(input_callback);
 
+  int channel;
+  int power;
+  static int sniffed_rssi;
+  NETSTACK_CONF_RADIO.set_value(RADIO_PARAM_CHANNEL, 22);
+  NETSTACK_CONF_RADIO.get_value(RADIO_PARAM_CHANNEL, &channel);
+  NETSTACK_CONF_RADIO.get_value(RADIO_PARAM_TXPOWER, &power);
+  LOG_INFO("Channel %d and Power %d", channel, power);
+
+
   etimer_set(&periodic_timer, SEND_INTERVAL);
   while(1) {
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
-    LOG_INFO("Sending %u to ", count);
-    LOG_INFO_LLADDR(NULL);
-    LOG_INFO_("\n");
-    
-    memcpy(nullnet_buf, &count, sizeof(count));
-    nullnet_len = sizeof(count);
+    tmr_count++;
+    if (tmr_count == 1000) {
+      tmr_count = 0;
+      LOG_INFO("Sending %u to ", count);
+      LOG_INFO_LLADDR(NULL);
+      LOG_INFO_("\n");
+      
+      memcpy(nullnet_buf, &count, sizeof(count));
+      nullnet_len = sizeof(count);
 
-    NETSTACK_NETWORK.output(NULL);
-    count++;
+      NETSTACK_NETWORK.output(NULL);
+      count++;
+    }
+    NETSTACK_CONF_RADIO.get_value(RADIO_PARAM_RSSI, &sniffed_rssi);
+    LOG_INFO("Sniffed RSSI: [%d]\n", sniffed_rssi);
     etimer_reset(&periodic_timer);
   }
 
