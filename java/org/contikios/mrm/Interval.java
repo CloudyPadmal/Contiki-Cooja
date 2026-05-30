@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Fredrik Osterlind
  */
-class Interval {
+public class Interval {
   private static final Logger logger = LoggerFactory.getLogger(Interval.class);
   
   private double lowValue;

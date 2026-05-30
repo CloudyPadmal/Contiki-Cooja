@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Fredrik Osterlind
  */
-class AngleInterval {
+public class AngleInterval {
   private static final Logger logger = LoggerFactory.getLogger(AngleInterval.class);
   
   // Sub intervals all between 0 and 2*PI
