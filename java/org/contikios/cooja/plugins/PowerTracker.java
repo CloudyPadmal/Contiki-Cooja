@@ -400,7 +400,8 @@ public class PowerTracker implements Plugin {
     }
 
     void dispose() {
-      radio.getRadioEventTriggers().removeTrigger(this, this::trigger);
+      // fix: null-pointer exception if dispose is called before constructor finishes
+      radio.getRadioEventTriggers().deleteTriggers(this);
       radio = null;
       mote = null;
     }
