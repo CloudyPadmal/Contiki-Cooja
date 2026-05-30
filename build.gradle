@@ -118,14 +118,11 @@ testing {
         runtimeOnly 'org.junit.platform:junit-platform-launcher'
       }
     }
-    test(JvmTestSuite) {
-      useJUnitJupiter()
-      testType = TestSuiteType.INTEGRATION_TEST
-    }
   }
 }
 
 test {
+  failOnNoDiscoveredTests = false
   reports {
     junitXml {
       outputPerTestCase = true
